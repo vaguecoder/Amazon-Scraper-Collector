@@ -1,84 +1,86 @@
 # Amazon-Scraper-and-Collector-Using-Go-REST-API
 
-> :warning: **If you are on Linux desktop, please refer the subdirectory [/Amazon-Scraper-and-Collector-Using-Go-REST-API-in-Linux](https://github.com/VagueCoder/Amazon-Scraper-and-Collector-Using-Go-REST-API/tree/master/Amazon-Scraper-and-Collector-Using-Go-REST-API-in-Linux) which has all these details along with Linux-specific steps.**
+> :warning: This is intended for the purpose of demonstration of interaction between multiple REST APIs that are developed using Go, and basic CRUD operations on MongoDB. The output of the application might not be useful, real-time.
 
 ## What does this project do? :bulb:
 This is a simple Go project that scrapes data (item name, image URL, price, description and total number of reviews posted so far) from the largest E-commerce website, [Amazon.com](https://www.amazon.com/) and stores in database. Following are the modules of this project:
 
-#### 1. [Scraper-API](https://github.com/VagueCoder/Amazon-Scraper-and-Collector-Using-Go-REST-API/tree/master/scraper-api)
-Scraper-API, as explained, takes Amazon page URL as input using POST request and scrapes the required details. And makes an internal call to next module, [Collector-API](https://github.com/VagueCoder/Amazon-Scraper-and-Collector-Using-Go-REST-API/tree/master/collector-api) using another POST request with the scraped details as form data.
+#### 1. [Scraper-API](https://github.com/VagueCoder/Amazon-Scraper-Collector/tree/master/scraper-api)
+Scraper-API, as explained, takes Amazon page URL as input using POST request and scrapes the required details. And makes an internal call to next module, [Collector-API](https://github.com/VagueCoder/Amazon-Scraper-Collector/tree/master/collector-api) using another POST request with the scraped details as form data.
 
-#### 2. [Collector-API](https://github.com/VagueCoder/Amazon-Scraper-and-Collector-Using-Go-REST-API/tree/master/collector-api)
-Collector-API gets triggered internally by [Scraper-API](https://github.com/VagueCoder/Amazon-Scraper-and-Collector-Using-Go-REST-API/tree/master/scraper-api) to collect the so fetched details and place in database. This makes calls to [MongoDB](https://hub.docker.com/_/mongo) module internally for storing in database.
+#### 2. [Collector-API](https://github.com/VagueCoder/Amazon-Scraper-Collector/tree/master/collector-api)
+Collector-API gets triggered internally by [Scraper-API](https://github.com/VagueCoder/Amazon-Scraper-Collector/tree/master/scraper-api) to collect the so fetched details and place in database. This makes calls to [MongoDB](https://hub.docker.com/_/mongo) module internally for storing in database.
 
 #### 3. [MongoDB](https://hub.docker.com/_/mongo)
-MongoDB module is a [Docker](https://www.docker.com/) container which is created of the [official mongo SDK image](https://hub.docker.com/_/mongo) that is available on [Docker Hub](https://hub.docker.com/) to use. The [Collector-API](https://github.com/VagueCoder/Amazon-Scraper-and-Collector-Using-Go-REST-API/tree/master/collector-api) calls the mongo functions to insert or retrieve the data from database.
+MongoDB module is container created of the [official mongo SDK image](https://hub.docker.com/_/mongo) that is available on [Docker Hub](https://hub.docker.com/). The [Collector-API](https://github.com/VagueCoder/Amazon-Scraper-Collector/tree/master/collector-api) calls the mongo functions to insert or retrieve the data from database.
 
 ## Knowledge (or) Technologies Used :books:
 **Sno.** | **Name** | **Usage**
 -------: | :------: | :--------
 1 | Go (Golang) | Go is a statically typed, compiled programming language designed at Google. Helps in speed and concurrency. More info at [golang.org](https://golang.org/doc/).
-2 | REST API | Representational State Transfer (REST) is a software architectural style that defines a set of constraints to be used for creating Web services. The rule Zero of using this is, you'll send everything as JSON objects over the application APIs and socket ports. More info at [restfulapi.net](https://restfulapi.net/).
+2 | REST API | Representational State Transfer (REST) is a software architectural style that defines a set of constraints to be used for creating Web services. The rule Zero of using this is, you'll send everything as JSON objects over the application endpoints (API socket ports). More info at [restfulapi.net](https://restfulapi.net/).
 3 | MongoDB | MongoDB is a cross-platform document-oriented database program. Classified as a NoSQL database program, MongoDB uses JSON-like documents with optional schemas. More info at [mongodb.com](https://www.mongodb.com/).
 4 | Docker | Docker is a set of platform as a service products that use OS-level virtualization to deliver software in packages called containers. These containers are lightweight virtual-machine kind of platforms which make use of same host OS kernel, but are very scalable and efficient. More info at [docker.com](https://www.docker.com/).
 
 
-## Base System Configuration :wrench:
+## Base System Configurations :wrench:
 **Sno.** | **Name** | **Version/Config.**
 -------: | :------: | :------------------
-1 | Operating System | Windows 10 x64 bit
+1 | Operating System | Windows 10 x64 bit + WSL2 Ubuntu-20.04 
 2 | Language | Go Version 1.14.7 Windows/amd64
-3 | IDE | Visual Studio Code Version 1.49.3
-4 | Containerization | Docker Version 19.03.13, Docker-Compose Version 1.27.4
+3 | IDE | Visual Studio Code Version 1.52.1
+4 | Containerization | Docker Version 20.10.0, Docker-Compose Version 1.27.4
 5 | Database | MongoDB Version 4.4.2
 
-> This probably doesn't make any difference in the usage of the application, whether you have the same softwares and configurations, as the applicaton works over Docker containers. But of course, the development steps may differ as per your configuration. The required softwares/configurations are mentioned under **Prerequisites** section.
+> This doesn't probably make any difference in usage if having a different version, as the application works in Docker containers. But of course, the development steps may differ as per your configuration. The required softwares/configurations are mentioned under **Prerequisites** section.
 
 ## Prerequisites :file_folder:
 **Sno.** | **Software** | **Detail** | **Download Links/Steps** |
 -------: | :----------: | :--------: | :----------------------: |
-1 | Docker Version 19.03.13 | Containerizes the application modules for using them as services. This also creates containers of Golang and MongoDB avoiding to download stand-alones for the same. | [docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop)
-2 | Docker-Compose Version 1.27.4 | A CLI of Docker that helps to run [docker-compose.yml](https://github.com/VagueCoder/Amazon-Scraper-and-Collector-Using-Go-REST-API/blob/master/docker-compose.yml) which is helps in building/starting/stopping all the containers at once and with ease. If using Windows (or) Mac, the Docker-Compose automatically gets downloaded along with Docker. | [docs.docker.com/compose/install/](https://docs.docker.com/compose/install/)
+1 | Docker Version 20.10.0 or Higher | Containerizes the application modules for using them as services. This also creates containers of Golang and MongoDB avoiding to download stand-alones for the same. | [docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop)
+2 | Docker-Compose Version 1.27.4 or Higher | A CLI of Docker that helps to run [docker-compose.yml](https://github.com/VagueCoder/Amazon-Scraper-Collector/blob/master/docker-compose.yml) which is helps in building/starting/stopping all the containers at once and with ease. If using Windows (or) Mac, the Docker-Compose automatically gets downloaded along with Docker. | [docs.docker.com/compose/install/](https://docs.docker.com/compose/install/)
 3 | Postman (or any equivalent) | Making the GET requests, and most importantly, the POST requests to the API are made easy with Postman. | [postman.com/downloads/](https://www.postman.com/downloads/)
-4 | Go 1.14.7 Windows/amd64 (only if you perform Unit tests) | The core programming language of the project. | [golang.org/doc/install](https://golang.org/doc/install)
 
 > If you're using Postman, for avoiding the issue with Proxy while running this application, go to **Postman -> File -> Settings -> Proxy** and uncheck "Use the system proxy" option.
 
 ## Useful Socket-Ports: :handshake:
-**Sno.** | **Port Number** | **Connected to** | **Defined Calls** | **Details**
--------: | :-------------: | :--------------: | :---------------- | :----------
-1 | 8080 | Scraper-API | 1. [http://localhost:8080/scraper](http://localhost:8080/scraper)<br>2. [http://host.docker.internal:8080/scraper](http://host.docker.internal:8080/scraper) | 1. Calling the port from local system.<br>2. Calling from inside the Docker containers.
-2 | 8081 | Collector-API | 1. [http://localhost:8081/collector](http://localhost:8081/collector)<br>2. [http://host.docker.internal:8081/collector](http://host.docker.internal:8081/collector) | 1. Calling the port from local system.<br>2. Calling from inside the Docker containers.
-3 | 27017 | MongoDB | 1. mongodb://localhost:27017<br>2. mongodb://host.docker.internal:27017 | 1. Calling the port from local system.<br>2. Calling from inside the Docker containers.<br> 27017 is the default port of MongoDB.
+**Sno.** | **Port Number** | **Endpoint** | **Defined Calls**
+-------: | :-------------: | :----------: | :----------------
+1 | 8080 | Scraper-API | 1. [http://localhost:8080/scraper](http://localhost:8080/scraper)
+2 | 8081 | Collector-API | 1. [http://localhost:8081/collector](http://localhost:8081/collector)
+3 | 27017 | MongoDB | 1. mongodb://localhost:27017
 
-> These ports are hard coded for now, but can be dynamically binded in future developments.
+> These ports are hard coded for now, but might be dynamically binded in future developments.
 
 ## Setup Application in Local :bookmark_tabs:
 Following the steps to recreate the application in your local (in Docker Containers) to scrape and save to database.
-1. Download the whole repo and place anywhere in the local. But the directory's inner structure should be as mentioned in [Directory Tree Structure](https://github.com/VagueCoder/Amazon-Scraper-and-Collector-Using-Go-REST-API/blob/master/Directory%20Tree%20Structure.txt) file. This is excluding:
-    - [/Amazon-Scraper-and-Collector-Using-Go-REST-API-in-Linux](https://github.com/VagueCoder/Amazon-Scraper-and-Collector-Using-Go-REST-API/tree/master/Amazon-Scraper-and-Collector-Using-Go-REST-API-in-Linux) - As this is an equivalent that is used only for Linux desktops.
-    - [/unit-testing](https://github.com/VagueCoder/Amazon-Scraper-and-Collector-Using-Go-REST-API/tree/master/unit-testing) - This is not mandatory; Not necessarily be under this parent directory; Needs to be in any location under GOPATH.
-2. Open command prompt on the same location and run the following commands:
+1. Download the whole repo and place anywhere in the local. Go's location constraint doesn't apply as application runs in containers. 
+2. Open command prompt on the same location and build using docker-compose.
 ```
-docker-compose up -d 
+docker-compose build
 ```
-The option `-d` (or use full form `--detach`) here means the container runs in background.
-Using "docker-compose up" here has the following advantages:
-  - It builds the services from the containers, which in turn, builds the services from our modules (Scraper-API & Collector-API) and official images (MongoDB) all by itself, if not built yet.
+3. Run the application (includes all module containers along with network) at once using the command:
+```
+docker-compose up -d
+```
+The option `-d` (short form of `--detach`) here means the container runs in background.
+
+Using docker-compose here has the following advantages:
+  - It builds the services from the containers, which in turn, builds the services from our modules (Scraper-API & Collector-API) and skips to build mongo as it can access the official image (MongoDB) all by itself.
   - It runs all the services as we expect from the command.
-  - Takes relative path from the base location of the project, hence the project location is not a constraint unlike when we use the local Go builds.
+  - Creates a network by default which helps in interaction between all the containers in the same app.
+  - Takes relative paths and root accesses of the project by default. Hence the project location is not a constraint unlike the native Go workspace.
   - Downloads the images that are mentioned in Dockerfile(s) for creating containers of/out of it. Like in this app, we had made use of [mongo](https://hub.docker.com/_/mongo) and [golang](https://hub.docker.com/_/golang) official SDK images from [Docker Hub](https://hub.docker.com).
   - Also, we've included the `:latest` tag for the mongo and golang images in Dockerfiles. This checks and keeps the containers up-to-date.
 
-Output:
+Last lines if output should be:
 ```
 Creating Collector-API ... done
 Creating Scraper-API   ... done
 Creating mongodb       ... done
 ```
-This is when you have the containers and project built already. If first run, the expected full output is at [Sample Command Line Output](https://github.com/VagueCoder/Amazon-Scraper-and-Collector-Using-Go-REST-API/blob/master/Sample%20Command%20Line%20Output.txt) file.
 
-3. To verify the services/containers processes running, run the following commands:
+4. To verify the services/containers processes running, run the following commands:
 ```
 docker-compose ps
 docker ps
@@ -101,19 +103,15 @@ ab8af239575a        collector-api       "./collector-api"        14 minutes ago 
 d28f9f2d0338        mongo:latest        "docker-entrypoint.s…"   14 minutes ago      Up 13 minutes       0.0.0.0:27017->27017/tcp           mongodb
 ```
 
-4. Unit Testing:
-
-This is not mandatory, but is highly recommended to run before you actually make use of the program. Complete details on Unit tests are explained under the section `Unit Testing` below.
-
 > Make use of the application after this. The application should function. How to use, is explained under `Making the Calls` and `Using Postman` sections below.
 
-5. Close the services/application:
+4. Close the services/application:
 ```
 docker-compose down
 ```
-This closes all the services gracefully (the word it uses for non-force shutting) along with removal of the containers.
+This closes all the services gracefully (the word it uses for non-force shutting). And removes the containers and network so created.
 
-`Note: The automatic removal process wipes out only the containers and networks that got created, and leaves the 4 images that are built (Scraper-API & Collector-API) or downloaded (mongo & golang). This is good. If not removed, the containers might collide with the new containers that will be build and might also lead to faulty builds.`
+`Note: The automatic removal process wipes out only the containers and network that got created, and leaves the 2 images that are built (Scraper-API & Collector-API) and of course, the downloaded images (mongo & golang) remain. This is good. If not removed, the containers might collide with the new containers that will be build and might also lead to build failures.`
 
 Output:
 ```
@@ -145,7 +143,7 @@ Form Data:
 }
 ```
 
-Few of the Amazon page URLs that were useful during the development of this project are saved in [/scraper-api/List of Sample URLs.txt](https://github.com/VagueCoder/Amazon-Scraper-and-Collector-Using-Go-REST-API/scraper-api/List%20of%20Sample%20URLs.txt). You may use the same (if functional by the time) or similar ones for reference.
+That is just a sample URL by the time of development of this project. Use any page of Amazon that has only 1 product in it to make sure the prices and details won't collide.
 
 Sample Output:
 ```
@@ -153,7 +151,7 @@ For URL: https://www.amazon.com/PlayStation-4-Pro-1TB-Console/dp/B01LOP8EZC/
 
 Product details scraped and stored in database with ID: 5fc40bdc092ea8b4c0c2c094
 ```
-There can be 3 types of output for this call:
+There can be 3 possible types of output for this:
 1. New Record: This inserts the data and returns the ID.
 1. Existing Record: This confirms on existance of record.
 1. Existing Record but updated data on Amazon page: This confirms on existance, updates the record in database and confirms that too.
@@ -181,58 +179,6 @@ Sample Output:
 ]
 ```
 
-## Unit Testing :mag:
-As explained above, this is a recommended module of the whole project which helps in doing the functionaity check on other modules (POST request on Scraper-API, GET request in Collector-API) and returns the confirmation. However, this has the following conditions applicable:
-1. This checks on behalf of user and hence it's not placed on Docker container.
-2. **Location-specific Go module**. i.e, the following are required:
-    - Go binary installed on desktop.
-    - GOPATH to be set in environment variables.
-    - The Unit Test Module (with or without the whole `Amazon-Scraper-and-Collector-Using-Go-REST-API` directory as that is not location-specific) should be placed in go's accessible location (suggestion: under the /bin or /src).
-
-If you have all the conditions set and docker-compose is up, you can quickly trigger the unit tests as follows:
-> Better to open in separate terminal.
-```
-D:\...\unit-testing> go test main_test.go requests.go -v 
-```
-Here, the path before '>' character is the `absolute path` from where you run the tests. `go test` is the syntax to run the unit tests in Go. `main_test.go` is used for testing the main.go using assertions. The `requests.go` is sent as an argument to main_test.go because that's from the same package but in different file. `-v` is enabling verbosity, i.e., it gives the stepwise success/failure states.
-
-#### Expected Output:
-```
-\unit-testing> go test main_test.go requests.go -v
-=== RUN   TestScraperResponse
---- PASS: TestScraperResponse (0.04s)
-=== RUN   TestScraperValues
---- PASS: TestScraperValues (0.02s)
-=== RUN   TestCollectorResponse
---- PASS: TestCollectorResponse (0.01s)
-=== RUN   TestCollectorValues
---- PASS: TestCollectorValues (0.01s)
-PASS
-ok      command-line-arguments  0.731s
-```
-
-As you see, this has 4 endpoints,
-1. **TestScraperResponse**
-    - Sends a POST request to Scraper-API with sample URL and checks for response to be not NIL and status code 200.
-2. **TestScraperValues**
-    - Checks the return value of POST request to Scraper-API whether any of the 3 responses (Inserted Record, Updated Record or Compares Existing Record) as explained earlier.
-    - If _TestScraperResponse_ fails, _TestScraperValues_ automatically fails.
-3. **TestCollectorResponse**
-    - Sends a GET request to Collector-API with sample URL and checks for response to be not NIL and status code 200.
-4. **TestCollectorValues**
-    - Checks the return value of GET request to Collector-API, i.e., all the following values whether scraped for multiple records in database
-      - ID
-      - URL
-      - Product name
-      - Product-image's URL
-      - Product's description
-      - Product's price
-      - Product's tTotal number of reviews
-      - Last updated timestamp
-    - If _TestCollectorResponse_ fails, _TestCollectorValues_ automatically fails.
-
-> Once the unit tests run as expected, you can confidently proceed to use the application.
-
 ## Using Postman :email:
 As explained above, postman helps in making the calls, especially the POST method calls to hosts. Make the proxy disable as explained under `Prerequisites` section.
 The steps are pretty simple.
@@ -245,6 +191,6 @@ The steps are pretty simple.
 Use the URLs, methods, form data and check for outputs in this with that of mentioned under `Making the Calls` section above.
 
 
-#### This concludes everything that is required to check and make use of the [Amazon-Scraper-and-Collector-Using-Go-REST-API](https://github.com/VagueCoder/Amazon-Scraper-and-Collector-Using-Go-REST-API). The code walk-throughs will be added in the future developments on this. For any issues, queries or discussions, please update in issues menu or write to `vaguecoder0to.n@gmail.com`.
+#### This concludes everything that is required to check and make use of the [Amazon-Scraper-Collector](https://github.com/VagueCoder/Amazon-Scraper-Collector). The code walk-throughs will be added in the future developments on this. For any issues, queries or discussions, please update in issues menu or write to `vaguecoder0to.n@gmail.com`.
 
 ## Happy Coding !! :metal:
