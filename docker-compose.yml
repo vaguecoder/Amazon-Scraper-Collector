@@ -1,0 +1,35 @@
+version: "3.8"
+
+volumes: 
+  mongodata:
+
+services:
+  frontend:
+    build:
+      context: ./scraper-api
+      dockerfile: Dockerfile
+    image: scraper-api
+    ports:
+      - "8080:8080"
+    expose:
+      - 8080
+    container_name: Scraper-API
+  
+  backend:
+    build:
+      context: ./collector-api
+      dockerfile: Dockerfile
+    image: collector-api
+    ports:
+      - "8081:8081"
+    container_name: Collector-API
+  
+  database:
+    image: mongo:4.4.2
+    ports:
+      - "27017:27017"
+    container_name: MongoDB
+    volumes:
+      - type: volume
+        source: mongodata
+        target: /data/db
