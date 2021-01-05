@@ -46,16 +46,16 @@ MongoDB module is container created of the [official mongo SDK image](https://hu
 ## Useful Socket-Ports: :handshake:
 **Sno.** | **Port Number** | **Endpoint** | **Defined Calls**
 -------: | :-------------: | :----------: | :----------------
-1 | 8080 | Scraper-API | 1. [http://localhost:8080/scraper](http://localhost:8080/scraper)
-2 | 8081 | Collector-API | 1. [http://localhost:8081/collector](http://localhost:8081/collector)
-3 | 27017 | MongoDB | 1. mongodb://localhost:27017
+1 | 8080 | Scraper-API | [http://localhost:8080/scraper](http://localhost:8080/scraper)
+2 | 8081 | Collector-API | [http://localhost:8081/collector](http://localhost:8081/collector)
+3 | 27017 | MongoDB | mongodb://localhost:27017
 
 > These ports are hard coded for now, but might be dynamically binded in future developments.
 
 ## Setup Application in Local :bookmark_tabs:
 Following the steps to recreate the application in your local (in Docker Containers) to scrape and save to database.
 1. Download the whole repo and place anywhere in the local. Go's location constraint doesn't apply as application runs in containers. 
-2. Open command prompt on the same location and build using docker-compose.
+2. Open any terminal in the same location and build using docker-compose.
 ```
 docker-compose build
 ```
@@ -105,7 +105,7 @@ d28f9f2d0338        mongo:latest        "docker-entrypoint.s…"   14 minutes ag
 
 > Make use of the application after this. The application should function. How to use, is explained under `Making the Calls` and `Using Postman` sections below.
 
-4. Close the services/application:
+5. Close the services/application:
 ```
 docker-compose down
 ```
